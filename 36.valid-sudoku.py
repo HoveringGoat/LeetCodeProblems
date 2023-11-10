@@ -18,13 +18,9 @@ class Solution:
 
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         for i in range(9):
-            if self.isValidSubSection(self.getRow(board, i)) == False:
-                return False
-        for i in range(9):
-            if self.isValidSubSection(self.getColumn(board, i)) == False:
-                return False
-        for i in range(9):
-            if self.isValidSubSection(self.getBox(board, i)) == False:
+            if (self.isValidSubSection(self.getRow(board, i)) == False) or \
+               (self.isValidSubSection(self.getColumn(board, i)) == False) or \
+               (self.isValidSubSection(self.getBox(board, i)) == False):
                 return False
         return True
     
