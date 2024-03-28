@@ -1,0 +1,15 @@
+c:\GitHub\LeetCodeProblems\c# leetcode\bin\Debug\net7.0\c# leetcode.exe
+c:\GitHub\LeetCodeProblems\c# leetcode\bin\Debug\net7.0\c# leetcode.deps.json
+c:\GitHub\LeetCodeProblems\c# leetcode\bin\Debug\net7.0\c# leetcode.runtimeconfig.json
+c:\GitHub\LeetCodeProblems\c# leetcode\bin\Debug\net7.0\c# leetcode.dll
+c:\GitHub\LeetCodeProblems\c# leetcode\bin\Debug\net7.0\c# leetcode.pdb
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.csproj.AssemblyReference.cache
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.GeneratedMSBuildEditorConfig.editorconfig
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.AssemblyInfoInputs.cache
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.AssemblyInfo.cs
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.csproj.CoreCompileInputs.cache
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.dll
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\refint\c# leetcode.dll
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.pdb
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\c# leetcode.genruntimeconfig.cache
+c:\GitHub\LeetCodeProblems\c# leetcode\obj\Debug\net7.0\ref\c# leetcode.dll
