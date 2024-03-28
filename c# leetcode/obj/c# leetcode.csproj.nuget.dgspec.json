@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj": {}
+    "C:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj": {}
   },
   "projects": {
-    "c:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj": {
+    "C:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj",
+        "projectUniqueName": "C:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj",
         "projectName": "c# leetcode",
-        "projectPath": "c:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj",
+        "projectPath": "C:\\GitHub\\LeetCodeProblems\\c# leetcode\\c# leetcode.csproj",
         "packagesPath": "C:\\Users\\Spence\\.nuget\\packages\\",
-        "outputPath": "c:\\GitHub\\LeetCodeProblems\\c# leetcode\\obj\\",
+        "outputPath": "C:\\GitHub\\LeetCodeProblems\\c# leetcode\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Spence\\AppData\\Roaming\\NuGet\\NuGet.Config",
