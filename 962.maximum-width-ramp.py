@@ -1,3 +1,8 @@
+# @before-stub-for-debug-begin
+from python3problem962 import *
+from typing import *
+# @before-stub-for-debug-end
+
 #
 # @lc app=leetcode id=962 lang=python3
 #
@@ -16,25 +21,28 @@ class Solution:
         # but keep updating the map value if its >
         
         activeIndexes = []
-        currentIndex = 0
-        currentMax = 0
-    
-        for value in nums:
-            hasUpdatedMap = False
-            for i in range (len(activeIndexes)-1, -1 , -1):
-                if value >= nums[activeIndexes[i]]:
-                    hasUpdatedMap = True
-                    t = currentIndex - activeIndexes[i] # calcWidth
-                    if t > currentMax:
-                        currentMax = t
-                else:
-                    break
-            if not hasUpdatedMap:
-                # we didnt update anything. Must be a new low value
-                # ensure it could possibly be a larger ramp than whatever we've found so far
-                if currentIndex+currentMax<len(nums):
-                    activeIndexes.append(currentIndex)
-            currentIndex += 1
-        return currentMax
+        maxWidth = 0
+        lastValueAdded = 0
+
+        # loop through the array front to back and get all the possible ramp start positions
+        for i in range(len(nums)):
+            if nums[i] < lastValueAdded or i == 0:
+                lastValueAdded = nums[i]
+                activeIndexes.append(i)
+
+        # walk through the array in reverse order and look at all the possible ramp end positions
+        i = len(nums) - 1
+        while i >= 0 and len(activeIndexes) > 0:
+            if nums[i] >= nums[activeIndexes[-1]]:
+                # max possible length for this index
+                # pop it and check if the previous one is also satified
+                width = i - activeIndexes.pop()
+                if width > maxWidth:
+                    maxWidth = width
+            else:
+                # end point invalid continue
+                i -= 1
+        
+        return maxWidth
 # @lc code=end
 
