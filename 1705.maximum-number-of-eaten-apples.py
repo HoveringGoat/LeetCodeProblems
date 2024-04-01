@@ -37,14 +37,14 @@ class Solution:
                         finalExpiration = expirationDate
 
                     # check if we have other apples on this date
-                    if expirationDate in appleCounts.keys():
+                    if expirationDate in appleCounts:
                         appleCounts[expirationDate] += apples[dayIndex]
                     else:
                         appleCounts[expirationDate] = apples[dayIndex]
                         
             # start walkthrough of eating apples. If we want to calculate all dates then walk
             # we won't know when the apples are created. If we do it at the same time we know
-            # thats the apples will exist
+            # that the apples will exist
                         
             # days start at 1 not 0            
             day = dayIndex + 1
@@ -52,7 +52,7 @@ class Solution:
                 applesDated = day
             
             # look for some good apples
-            while applesDated not in appleCounts.keys() or appleCounts[applesDated] == 0:
+            while applesDated not in appleCounts or appleCounts[applesDated] == 0:
                 if applesDated > finalExpiration:
                     break
                 applesDated += 1
