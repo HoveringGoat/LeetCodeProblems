@@ -3,7 +3,8 @@
 #
 # [2749] Minimum Operations to Make the Integer Zero
 #
-
+from typing import *
+import math
 # @lc code=start
 class Solution:
     def makeTheIntegerZero(self, num1: int, num2: int) -> int:
@@ -22,7 +23,8 @@ class Solution:
 
         values = []
         for i in range(61):
-            a = 2^i + num2
+            z = int(math.pow(2, i))
+            a = z + num2
             values.append(a)
         
         minValue = min(values)
@@ -58,17 +60,22 @@ class Solution:
 
         searchDepth = 1
         previousSearchValues = {0}
+        previouslyUsedValues = set()
         currSearchValues = set()
         while True:
             for p in previousSearchValues:
                 for v in values:
-                    if p + v == num1:
+                    currentValue = p+v
+                    if currentValue in previouslyUsedValues:
+                        continue
+                    if currentValue == num1:
                         return searchDepth
                     # this might be invalid logic
-                    if p + v + minValue > num1:
+                    if currentValue > num1:
                         # numbers are too big search next
                         break
-                    currSearchValues.add(p+v)
+                    currSearchValues.add(currentValue)
+                    previouslyUsedValues.add(currentValue)
             previousSearchValues = currSearchValues
             currSearchValues = set()
             searchDepth += 1
@@ -78,6 +85,12 @@ class Solution:
         
         return -1
             
+
+if __name__ == "__main__":
+    print("Hello, World!")
+    num1 = 3
+    num2 = -2
+    Solution.makeTheIntegerZero(None, num1, num2)
         
 # @lc code=end
 
