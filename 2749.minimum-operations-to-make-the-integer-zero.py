@@ -27,7 +27,7 @@ class Solution:
             a = z + num2
             values.append(a)
         
-        minValue = min(values)
+        minValue = values[0]
         
         # if n2 < 0 then there will always be a solution
         if minValue > num1:
@@ -58,6 +58,10 @@ class Solution:
         # init values as we expand search. So if we didnt find a value this turn or next we'd have to
         # expand search to 52. 126 is a long ways off so another fwe turns to search with these values
 
+
+
+        # we need to know what to skip the bigly negative numbers if num2 is very negative.
+        # we end up with too many values we are looking through 
         searchDepth = 1
         previousSearchValues = {0}
         previouslyUsedValues = set()
@@ -68,6 +72,10 @@ class Solution:
                     currentValue = p+v
                     if currentValue in previouslyUsedValues:
                         continue
+                    # compare to num2
+                    # if currentValue < minValue:
+                    #     # numbers are too smol search next
+                    #     continue
                     if currentValue == num1:
                         return searchDepth
                     # this might be invalid logic
@@ -88,8 +96,8 @@ class Solution:
 
 if __name__ == "__main__":
     print("Hello, World!")
-    num1 = 3
-    num2 = -2
+    num1 = 17
+    num2 = -65
     Solution.makeTheIntegerZero(None, num1, num2)
         
 # @lc code=end
