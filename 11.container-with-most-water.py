@@ -12,69 +12,74 @@ from typing import *
 # @lc code=start
 class Solution:
     def maxArea(self, height: List[int]) -> int:
-        # some thoughts: to avoid brute forcing we need a way to quickly "skip"
-        # bad heights. If we could quickly check the biggest possible container
-        # with a dealy we could spit out its theoretical max - without looking 
-        # at all the neighbors. Store max size and look up against that and furthest
-        # away. (this wont be the actual max but if its less we can skip)
+        # try to narrow down the possible left and right "walls"
+        leftIndex = 0
+        rightIndex = len(height)-1
+        foundLeft = False
+        foundRight = False
+        currentMax = rightIndex
+        if height[leftIndex] < height[rightIndex]:
+            currentMax *= height[leftIndex]
+        else:
+            currentMax *= height[rightIndex]
 
-        heightSorted = sorted(height)
-        start = 0
-        n = len(height)
-        isSorted = (heightSorted == height)
-        maxArea = self.assumedMax(height, n)
+        while (not foundLeft or not foundRight) and leftIndex<rightIndex:
+            # try moving left end rightward
+            if height[leftIndex] < height[rightIndex] and not foundLeft:
+                # left side is smaller than right we can possibly improve!
+                foundLeft = True
+                for i in range(leftIndex+1, rightIndex, 1):
+                    if height[i] > height[leftIndex]:
+                        # check area
+                        currentArea = rightIndex - i
+                        if height[i] < height[rightIndex]:
+                            currentArea *= height[i]
+                        else:
+                            currentArea *= height[rightIndex]
+                        if currentArea > currentMax:
+                            currentMax = currentArea
 
-        for i in range(n):
-            currentMax = self.getCurrentMax(height[i], i, n-1)
-            if currentMax < maxArea:
-                continue
-            if isSorted:
-                maxArea = currentMax
-                continue
+                        leftIndex = i
+                        foundLeft = False
+                        # reset the found bool so we will continue searching later
+                        break
+                # if the found bool WASNT reset then we checked all the values and this is best 
 
-            # if (i+1<n):
-            #     nextMax = self.getCurrentMax(height[i+1], i+1, maxIndex)
-            #     if nextMax > currentMax:
-            #         continue
-            # dont need to check values already checked
-            skips = 0
-            for j in range(1, n-i):
-                if (j+i < n-1):
-                    # check if next value is better - sk
-                    # ip if it is
-                    if (height[j+i+1]>height[j+i]):
-                        skips += 1
-                        if skips * height[j+i-skips+1] > maxArea:
-                            maxArea = skips * height[j+i-skips+1]
-                            if self.getCurrentMax(height[i], i, n) < maxArea:
-                                i += 1
-                                break
-                        continue
+            # else try moving right wall leftwards
+            elif height[rightIndex] < height[leftIndex] and not foundRight:
+                foundRight = True
+                for i in range(rightIndex-1, leftIndex, -1):
+                    if height[i] > height[rightIndex]:
+                        # check area
+                        currentArea = i - leftIndex
+                        if height[i] < height[leftIndex]:
+                            currentArea *= height[i]
+                        else:
+                            currentArea *= height[leftIndex]
+                        if currentArea > currentMax:
+                            currentMax = currentArea
+                            
+                        rightIndex = i
+                        foundRight = False
+                        # reset the found bool so we will continue searching later
+                        break
+            else:
+                # we're stuck. try incrementing if we're not done
+                if not foundLeft:
+                    leftIndex += 1
+                if not foundRight:
+                    rightIndex -= 1
+                    
+                # calc new area
+                currentArea = rightIndex - leftIndex
+                if height[leftIndex] < height[rightIndex]:
+                    currentArea *= height[leftIndex]
+                else:
+                    currentArea *= height[rightIndex]
+                if currentArea > currentMax:
+                    currentMax = currentArea
 
-                #okay do the checking
-                # j is the distance
-                skips = 0
-                h = height[i]
-                if h > height[j+i]:
-                    h = height[j+i]
-                containerArea = h*j
-                if containerArea > maxArea:
-                    maxArea = containerArea
-        return maxArea
-    
-    def assumedMax(self, height:List[int], n:int):
-        h = height[n-1]
-        i = int((n-1)*.7)
-        l = (n-1) - i
-        t = height[i]
-        if h>t:
-            return l * t
-        return l * h
-    
-    def getCurrentMax(self, height: int, i:int, maxIndex:int) -> int:
-        length = maxIndex-i
-        return length * height
-        
+        return currentMax
         
 # @lc code=end
 
