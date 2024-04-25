@@ -24,6 +24,9 @@ class Solution:
         # reverse array and count water from the other side
         water = lastValueWater
         lastValue = 0
+
+        # would be nice if enumerate had a "reverse" option.
+        # I could reverse the array too but then the index would be diff
         for index in range(len(height)-1, lastValueIndex, -1):
             waterTrapped = lastValue - height[index]
             if waterTrapped <= 0:
