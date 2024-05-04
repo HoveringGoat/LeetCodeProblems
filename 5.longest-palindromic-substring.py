@@ -23,37 +23,15 @@ class Solution:
     
     def longestPalindrome(self, s: str) -> str:
         # if the whole string is a palindrome return the whole string
-        if self.isPalindrome(s):
-            return s
-        
-        maxSubString = ""
-        for index, value in enumerate(s):
+        startIndex = 0
+        length = len(s)
 
-            # check both even and odd palindromes
-            for i in range(2):
-                leftIndex = index
-                rightIndex = index
-                rightIndex += i
-                if rightIndex > len(s) - 1:
-                    continue
-                subString = s[leftIndex:rightIndex+1]
-                isPalindrome = self.isPalindrome(subString)
-
-                while isPalindrome:
-                    if len(subString) > len(maxSubString):
-                        maxSubString = subString
-                    leftIndex -= 1
-                    rightIndex += 1
-
-                    # ensure we're in bounds
-                    if leftIndex < 0:
-                        break
-                    if rightIndex > len(s) - 1:
-                        break
-                    subString = s[leftIndex:rightIndex+1]
-                    isPalindrome = self.isPalindrome(subString)
-            
-        return maxSubString
+        # search all possible subsets from largest to smallest
+        for l in range(length, 0, -1):
+            for i in range(0, len(s)-l+1):
+                subset = s[i:i+l+1]
+                if self.isPalindrome(subset):
+                    return subset
         
 # @lc code=end
 
