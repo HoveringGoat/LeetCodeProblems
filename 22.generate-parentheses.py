@@ -1,3 +1,8 @@
+# @before-stub-for-debug-begin
+from python3problem22 import *
+from typing import *
+# @before-stub-for-debug-end
+
 #
 # @lc app=leetcode id=22 lang=python3
 #
@@ -8,63 +13,67 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         # two options close current parentheses or open a new one
-        allParen = set()
+        allParen = {}
 
-        # first and last are always an opener and a close. The rest are all the combos
-        # n =1 01
-        # n=2  01,10 -> 0011, 0101
-        # n=3  000111, 001011, 011001, 010101
-        # 1 = open, -1 = close
-        iter = 1
-        allParen.add("()")
+        iter = 0
+        allParen[""] = 1
         while iter < n:
-            newSet = set()
+            newSet = {}
             for i in allParen:
 
-                s = "("
-                count = 1
-                skip = False
-                isInvalid = False
-                for c in i:
-                    if c == ")":
-                        count +=1
-                        s += "("
-                    else:
-                        # only disallow "invalid" groups on the last iteration
-                        if count == 0:
-                            skip = True
-                            break
-                        count -=1
-                        s += ")"
-                s+=")"
+                isValid = allParen[i]
+                s = "(" + i + ")"
+                if s == "(((())))(())":
+                    print("found")
+                v = min(1,isValid + 1)
+                if v == 1 or s not in newSet:
+                    newSet[s] = v
 
-                # add check to make sure we dont add invalid groups
-                if not skip:
-                    newSet.add(s)
+                s = ")" + i + "("
+                if s == "(((())))(())":
+                    print("found")
+                v = isValid - 1
+                if v == 1 or s not in newSet:
+                    newSet[s] = v
 
-                s = "("
-                s+=i
-                s+=")"
-                newSet.add(s)
-                s = "()"
-                s+=i
-                newSet.add(s)
-                s=i
-                s += "()"
-                newSet.add(s)
+                s = "()" + i
+                if s == "(((())))(())":
+                    print("found")
+                if isValid == 1 or s not in newSet:
+                    newSet[s] = isValid
 
-                # add the (())/(()) group
-                if (iter +1) % 2 == 0:
-                    size = int((iter+1) *.5)
-                    s = "(" * size
-                    s += ")" * size
-                    s += s 
-                    newSet.add(s)
-                    
+                s = i + "()"
+                if s == "(((())))(())":
+                    print("found")
+                if isValid == 1 or s not in newSet:
+                    newSet[s] = isValid
+
+                if iter > 3 and i[-1] == ")":
+                    s = i[:-1] + "())"
+                    if s == "(((())))(())":
+                        print("found")
+                    if isValid == 1 or s not in newSet:
+                        newSet[s] = isValid
+
+                if iter > 3 and i[0] == "(":
+                    s = "(()" + i[1:]
+                    if s == "(((())))(())":
+                        print("found")
+                    if isValid == 1 or s not in newSet:
+                        newSet[s] = isValid
+
             allParen = newSet
             iter += 1
+            
+        valids = []
+        for k,v in allParen.items():
+            if k == "(((())))(())":
+                print("asdas")
+            if v == 1:
+                valids.append(k)
         
-        return allParen
+        valids.sort()
+        return valids
 
         
 # @lc code=end
