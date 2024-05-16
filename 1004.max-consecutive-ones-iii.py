@@ -18,7 +18,6 @@ class Solution:
         # we have to go to the tail and free up the first zero
         # and any preceding ones
 
-        head = 0
         tail = 0
         availableK = k
         zeroCounter = 0
