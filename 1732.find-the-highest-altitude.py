@@ -11,8 +11,7 @@ class Solution:
         currentAlt = 0
         for i in gain:
             currentAlt += i
-            if currentAlt > maxAlt:
-                maxAlt = currentAlt
+            maxAlt = max(maxAlt, currentAlt)
         return maxAlt
         
 # @lc code=end
