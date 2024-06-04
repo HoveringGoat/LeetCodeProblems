@@ -30,9 +30,8 @@ class Solution:
         map2 = self.getMapOfWord(word2)
         
         # ensure keys are same
-        for char in map.keys():
-            if char not in map2.keys():
-                return False
+        if set(map.keys()) != set(map2.keys()):
+            return False
             
         return sorted(map.values()) == sorted(map2.values())
 
