@@ -15,7 +15,7 @@ class Solution:
             
             digits[-1*index] -= 10
             if index == len(digits):
-                return [1]+digits
+                return [1] + digits
             index += 1
 
         
