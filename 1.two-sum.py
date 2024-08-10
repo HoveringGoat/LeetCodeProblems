@@ -7,6 +7,21 @@
 # @lc code=start
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
+
+        map = {}
+        for (index, value) in enumerate(nums):
+            # calculate the match needed to hit the target 
+            diff = target - value
+
+            # check if the match is in the map
+            if diff in map:
+                return [map[diff], index]
+            
+            # no match in map. Add value so match can find this value
+            map[value] = index
+
+        return [0,0]
+    
         orderedNums = {}
         for i in range(len(nums)):
             if nums[i] in orderedNums:
