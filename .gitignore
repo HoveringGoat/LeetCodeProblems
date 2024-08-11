@@ -2,3 +2,4 @@
 *.pyc
 /c\# leetcode/obj
 /rust/target
+/c\# leetcode/obj
