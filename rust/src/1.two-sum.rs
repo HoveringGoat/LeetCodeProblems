@@ -10,7 +10,7 @@ impl Solution {
     pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
         let mut map: HashMap<i32, i32> = HashMap::new();
         
-        for (index, value) in nums.iter().enumerate() {
+        for (index, &value) in nums.iter().enumerate() {
             // calculate the value of a pair
             let diff = target - value;
 
@@ -19,7 +19,7 @@ impl Solution {
                 return vec![*pair, index as i32]; 
             }
             // no match found so lets add the corresponding pair to the map.
-            map.insert(*value, index as i32);
+            map.insert(value, index as i32);
         }
 
         // shouldnt happen.
