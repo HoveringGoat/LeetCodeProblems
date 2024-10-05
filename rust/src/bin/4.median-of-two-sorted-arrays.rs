@@ -32,6 +32,10 @@ impl Solution {
         // one less one more in first and one more no less in second
         // thats a pass? I guess
         // so if its odd then as long as its within 2 it means we hit.
+        
+        // so for Input: nums1 = [1,2,3], nums2 = [2,3,4,5,6,7,8,9]
+        // odd so one number
+        // 2 -> gets +7 from nums2. Now what? means we need to shift by 3?
 
         let total_length = nums1.len() + nums2.len();
         let mut guess: f64 = 0.0;
@@ -53,6 +57,8 @@ impl Solution {
                 nums1_diff = -1;
             }
         }
+
+
         return guess;
 
 

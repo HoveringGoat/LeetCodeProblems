@@ -1,6 +1,6 @@
 namespace c__leetcode
 {
-    public class Solution
+    public partial class Solution
     {
         public int EliminateMaximum(int[] dist, int[] speed)
         {

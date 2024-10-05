@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection.Metadata.Ecma335;
-public class Solution
+public partial class Solution
 {
     public int MinTime(int n, int[][] edges, IList<bool> hasApple)
     {
