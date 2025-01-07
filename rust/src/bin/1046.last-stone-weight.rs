@@ -14,10 +14,6 @@ impl Solution {
         sorted_stones.sort();
         sorted_stones.reverse();
         while (sorted_stones.len() > 1) {
-            for i in 0..sorted_stones.len(){
-                sorted_stones.sort();
-                sorted_stones.reverse();
-            }
             let remainder: i32 = sorted_stones.remove(0) - sorted_stones.remove(0);
             
             if (remainder > 0){
