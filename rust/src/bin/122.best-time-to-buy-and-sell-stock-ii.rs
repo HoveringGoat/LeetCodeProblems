@@ -11,7 +11,7 @@ impl Solution {
         let mut bought_price: i32 = 0;
         let mut bought: bool = false;
         let mut last_price = prices[0];
-        
+
         for price in prices{
             if (last_price < price){
                 // price went up
@@ -26,6 +26,7 @@ impl Solution {
                 // price go down
                 // lock in profit (before dip)
                 // remove bought stock
+                // if we werent holding we can ignore
                 if (bought){
                     profit -= bought_price;
                     profit += last_price;
