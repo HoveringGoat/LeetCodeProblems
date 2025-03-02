@@ -28,12 +28,17 @@ class Solution:
         word_length: int = len(words[0])
         substring_length: int = len(words) * word_length
         max_index = len(s) + 1 - substring_length
+        valid_substrings: List[str] = []
 
         for i in range(max_index):
             substring: str = s[i:i+substring_length]
-            if self.checkSubString(substring, words.copy()):
+            if substring in valid_substrings:
+                indicies.append(i)
+            elif self.checkSubString(substring, words.copy()):
+                valid_substrings.append(substring)
                 indicies.append(i)
         return indicies
+    
     def checkSubString(self, substring: str, words:List[str]) -> bool:
         word_length: int = len(words[0])
         #print(f"substring: {substring}")
