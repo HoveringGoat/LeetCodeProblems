@@ -22,7 +22,6 @@ from typing import Optional
 
 class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        # meh i do later
         # walk through each k sublist of nodes. reverse each connection.
         # keep ref to first node since it will be the "end" of the sublist
         # when we reach the end of a sublist connect the "first" node from before
