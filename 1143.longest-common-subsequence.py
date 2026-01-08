@@ -10,89 +10,158 @@ from typing import List
 
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
-        setsA = []
-        setsB = []
-        setIndex = 0
-        setsA.append(self.getOrderedSet(text1))
-        setsB.append(self.getOrderedSet(text2))
-        self.reviseSets(setsA, setsB, setIndex)
-        self.reviseSets(setsB, setsA, setIndex)
-        while True:
-            setIndex += 1
-            #revise set a
-            self.addSet(setsA, setIndex+1)
-            self.reviseSets(setsA, setsB, setIndex)
-            if len(setsA[setIndex]) == 0:
-                return setIndex
-
-            #revise set b
-            self.addSet(setsB, setIndex+1)
-            self.reviseSets(setsB, setsA, setIndex)
-            if len(setsB[setIndex]) == 0:
-                return setIndex
-
-            # terminal cases
-            if setsA[setIndex] == setsB[setIndex]:
-                # trivial case find largest substring of set
-                return self.getLargestSubsequence(setsA, setIndex)
+        # some init setup
+        setA = self.getOrderedSet(text1)
+        setB = self.getOrderedSet(text2)
+        return self.getLongestSubsequenceFromSets(setA, setB)
             
+    def getLongestSubsequenceFromSets(self, setA: tuple[List,dict], setB: tuple[List,dict]):
+        self.reviseSets(setB, setA)
+
+        # trivial case: matching sets
+        if setA[0] == setB[0]:
+            return len(setA[0])
+
+        # trivial case
+        if len(setA[0]) == 0 or len(setB[0]) == 0:
+            return 0        
         
-    def reviseSets(self, setsA: List[List], setsB: List[List], setIndex: int):
-        # given sets revise index based on the other
-        unorderedSet = set(setsB[setIndex])
-        newSet = []
-        for i in setsA[setIndex]:
-            if i in unorderedSet:
-                newSet.append(i)
-        setsA[setIndex] = newSet
-
-    def addSet(self, sets: List[List], subSequenceLength: int):
-        # adds the next set of subsequence strings
-        previousSet = set(sets[subSequenceLength-2])
-
-        # generate subsequences
-        newSet = self.generateSubSequences(sets[0], subSequenceLength)
-        newSet = self.removeMissingSets(newSet, previousSet)
-        sets.append(newSet)
-
-    def generateSubSequences(self, baseSet: List, subSequenceLength) -> List[str]:
-        # generate a subsequence of the desired length from the base set
-        # ensure previous sets are matched
-        if len(baseSet) == subSequenceLength:
-            return [baseSet.join]
-        subSequences = []
-        # subsequences that start with the first char in the base set
-        subSetSubsequences = self.generateSubSequences(baseSet[1:], subSequenceLength-1)
-        for i in subSetSubsequences:
-            subSequences.append(f"{baseSet[0]}i")
+        # first elements match. it is part of the subsequence. pop and re-attempt.
+        if setA[0][0] == setB[0][0]:
+            self.popNthElement(setA, 0)
+            self.popNthElement(setB, 0)
+            return 1 + self.getLongestSubsequenceFromSets(setA, setB)
+        # last elements match
+        if setA[0][-1] == setB[0][-1]:
+            self.popNthElement(setA, -1)
+            self.popNthElement(setB, -1)
+            return 1 + self.getLongestSubsequenceFromSets(setA, setB)
         
-        excluded = self.generateSubSequences(baseSet[1:], subSequenceLength)
-        for i in excluded:
-            subSequences.append(i)
-        return subSequences
+        # trivial case of redundant elements. first matches last.
+        if setA[0][-1] == setB[0][0]:
+            value = setA[0][-1]
+            if setA[1][value] == 1 and setB[1][value] > 1:
+                # only remove from the edge on B
+                self.popNthElement(setB, 0)
+                return self.getLongestSubsequenceFromSets(setA, setB)
+        
+            if setA[1][value] > 1 and setB[1][value] == 1:
+                # only remove from edge on A
+                self.popNthElement(setA, -1)
+                return self.getLongestSubsequenceFromSets(setA, setB)
             
-    def removeMissingSets(self, newSet: List[str], previousSet: set[str]) -> List[str]:
-        updateSet = []
-        toSet = set(newSet)
-        for i in toSet:
-            for p in previousSet:
-                if p in i:
-                    updateSet.append(i)
-                    break
-        return updateSet
+            # remove both in the case they each have 1 element or both more than 1
+            self.popNthElement(setA, -1)
+            self.popNthElement(setB, 0)
+            return self.getLongestSubsequenceFromSets(setA, setB)
 
-    def getOrderedSet(self, string: str) -> List:
-        map = []
+        # trivial case of redundant elements. first matches last.
+        if setA[0][0] == setB[0][-1]:
+            value = setA[0][0]
+            if setA[1][value] == 1 and setB[1][value] > 1:
+                # only remove from the edge on B
+                self.popNthElement(setB, -1)
+                return self.getLongestSubsequenceFromSets(setA, setB)
+        
+            if setA[1][value] > 1 and setB[1][value] == 1:
+                # only remove from edge on A
+                self.popNthElement(setA, 0)
+                return self.getLongestSubsequenceFromSets(setA, setB)
+            
+            # remove both in the case they each have 1 element or both more than 1
+            self.popNthElement(setA, 0)
+            self.popNthElement(setB, -1)
+            return self.getLongestSubsequenceFromSets(setA, setB)
+        
+        # get max possible subsequence length if the first char IS part of the subsequence
+        possibleSubSequenceLength = self.getMaxPossibleSubSequence(setA, setB, 0)
+        
+        # remove first element
+        value = setA[0].pop(0)
+        setA[1][value] -= 1
+
+        # duplicate sets so we have an intact copy if we need to check the other path
+        # copied sets when first value is the first in the subsequence
+        copyA = self.duplicate(setA)
+        copyB = self.duplicate(setB)
+        self.popUntil(copyB, value)
+
+        # attempt to continue getting longest subsequence discarding this first value
+        # (assumes it is NOT in the subsequence)
+        discardedLength = self.getLongestSubsequenceFromSets(setA, setB)
+
+        # check if found subsequence length is greater than the largest possible subsequence with the removed value
+        if discardedLength >= possibleSubSequenceLength:
+            return discardedLength
+        
+        # max possible value was larger. Now we check if it actually WAS larger
+        actualSubSequenceLength = 1 + self.getLongestSubsequenceFromSets(copyA, copyB)
+        return max(actualSubSequenceLength, discardedLength)
+    
+    def popUntil(self, setA: tuple[List,dict], value):
+        values = setA[0].copy()
+        for i in values:
+            if i == value:
+                setA[0].remove(i)
+                setA[1][i] -= 1
+
+                return
+            setA[0].remove(i)
+            setA[1][i] -= 1
+        
+    def duplicate(self, setA: tuple[List,dict]) -> tuple[List,dict]:
+        list = setA[0].copy()
+        dict = setA[1].copy()
+        return (list, dict)
+
+    def getMaxPossibleSubSequence(self, setA: tuple[List,dict], setB: tuple[List,dict], index: int):
+        # note index should only be first or last
+        # get how many POSSIBLE values could be in this subsequence
+        value = setA[0][index]
+        found: bool = False
+        count: int = 0
+        for i in setB[0]:
+            if found:
+                count += 1
+            if i != value:
+                count += 1
+                found = True
+        return count
+        
+    def popNthElement(self, setA: tuple[List,dict], index: int):
+        value = setA[0].pop(index)
+        setA[1][value] -= 1
+        
+    def reviseSets(self, setA: tuple[List,dict], setB: tuple[List,dict]):
+        # update the entries in the sets to make sure they match each other
+        remove = []
+        for key in setA[1].keys():
+            if key not in setB[1].keys() or setB[1][key] <= 0:
+                remove.append(key)
+        for key in remove:
+            count = setA[1].pop(key)
+            for i in range(count):
+                setA[0].remove(key)
+                    
+        remove = []
+        for key in setB[1].keys():
+            if key not in setA[1].keys() or setA[1][key] <= 0:
+                remove.append(key)
+        for key in remove:
+            count = setB[1].pop(key)
+            for i in range(count):
+                setB[0].remove(key)
+
+    def getOrderedSet(self, string: str) -> tuple[List, dict]:
+        list = []
+        counts = {}
         for i in string:
-            map.append(i)
-        return map
+            list.append(i)
+            if i in counts:
+                counts[i] += 1
+            else:
+                counts[i] = 1
 
-    def getLargestSubsequence(self, sets: List[List], setIndex) -> int:
-        if len(sets[setIndex]) == 0:
-            return len(sets[setIndex-1][0])
-
-        setIndex += 1
-        self.addSet(sets, setIndex+1)
-        return self.getLargestSubsequence(sets, setIndex)
+        return (list, counts)
 # @lc code=end
 
