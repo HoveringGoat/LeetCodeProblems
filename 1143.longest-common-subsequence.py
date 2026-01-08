@@ -7,6 +7,7 @@
 # @lc code=start
 from typing import List
 
+# failing: ""mhunuzqrkzsnidwbun"\n"szulspmhwpazoxijwbq""
 
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
