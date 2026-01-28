@@ -7,6 +7,7 @@
 # @lc code=start
 class Solution:
     def maxProfit(self, prices: List[int], fee: int) -> int:
+          
         profit = 0
         currentBuy = 0
         currentSell = 0
@@ -52,6 +53,33 @@ class Solution:
         return profit
         
 
-        
+    # gpts dp method. calculate max profit from each state we could be in each day
+    # we own the stock or we dont own the stock
+    def maxProfit2(self, prices: List[int], fee: int) -> int:
+        # calculate the init values
+
+        # we did not buy stock. cash/profit unchanged
+        cash = 0
+        # We bought the stock at the first days price. cash is negative at price of stock minus fee
+        hold = -prices[0] - fee
+
+        # continue calculating states AFTER the first day
+        for p in prices[1:]:
+            # what if we didn't own the stock 
+            # two possibilities either we already didnt own in which case we carry over our cash balance from yesterday
+            # or we are selling.
+            nextCash = max(cash, hold + p)
+
+            # what if we did own the stock
+            # first option we already own it in which case we continue holding
+            # second we sell and take profit
+            nextHold = max(hold, cash - p - fee)
+
+            # i originally thought this would cause branching and we couldn't preserve state but optimal trade WILL
+            # be preserved in the hold/cash values 
+            cash = nextCash
+            hold = nextHold
+
+        return cash
 # @lc code=end
 
